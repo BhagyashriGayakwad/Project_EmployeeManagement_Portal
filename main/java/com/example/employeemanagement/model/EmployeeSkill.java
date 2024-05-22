@@ -3,7 +3,7 @@ package com.example.employeemanagement.model;
 import javax.persistence.*;
 import java.io.Serializable;
 @Entity
-@Table(name="emp-skills")
+@Table(name="emp_skills")
 public class EmployeeSkill {
     @EmbeddedId
     private EmployeeSkillId id;
