@@ -1,67 +1,37 @@
-package com.example.employeemanagement.controller;
+package com.emp.controller;
 
-import com.example.employeemanagement.model.Employee;
-import com.example.employeemanagement.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import com.emp.dto.UserRequest;
+import com.emp.service.EmployeeService;
 
 @RestController
-@RequestMapping("/api/employees")
+@RequestMapping("/api/employee")
 public class EmployeeController {
 
     @Autowired
     private EmployeeService employeeService;
 
-    // Get all employees
-    @GetMapping
-    public List<Employee> getAllEmployees() {
-        return employeeService.findAll();
-    }
-
-    // Get a single employee by ID
-    @GetMapping("/{id}")
-    public ResponseEntity<Employee> getEmployeeById(@PathVariable(value = "id") Long id) {
-        Employee employee = employeeService.findById(id);
-        if (employee == null) {
-            return ResponseEntity.notFound().build();
+    @PreAuthorize("hasRole('EMPLOYEE')")
+    @PutMapping("/update-profile/{userId}")
+    public ResponseEntity<String> updateUserProfile(@PathVariable Long userId, @RequestBody UserRequest userRequest) {
+        try {
+            boolean isUpdated = employeeService.updateUserProfile(userId, userRequest);
+            if (isUpdated) {
+                return ResponseEntity.ok("User profile updated successfully");
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Unknown error");
+            }
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-        return ResponseEntity.ok().body(employee);
-    }
-
-    // Create a new employee
-    @PostMapping
-    public Employee createEmployee(@RequestBody Employee employee) {
-        return employeeService.save(employee);
-    }
-
-    // Update an employee
-    @PutMapping("/{id}")
-    public ResponseEntity<Employee> updateEmployee(@PathVariable(value = "id") Long id,
-                                                   @RequestBody Employee employeeDetails) {
-        Employee employee = employeeService.findById(id);
-        if (employee == null) {
-            return ResponseEntity.notFound().build();
-        }
-        employee.setName(employeeDetails.getName());
-        employee.setEmail(employeeDetails.getEmail());
-        employee.setSkills(employeeDetails.getSkills());
-        employee.setProject(employeeDetails.getProject());
-        Employee updatedEmployee = employeeService.save(employee);
-
-        return ResponseEntity.ok(updatedEmployee);
-    }
-
-    // Delete an employee
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Employee> deleteEmployee(@PathVariable(value = "id") Long id) {
-        Employee employee = employeeService.findById(id);
-        if (employee == null) {
-            return ResponseEntity.notFound().build();
-        }
-        employeeService.delete(employee);
-        return ResponseEntity.ok().build();
     }
 }
