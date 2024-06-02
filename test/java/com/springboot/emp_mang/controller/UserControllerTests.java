@@ -1,0 +1,70 @@
+package com.springboot.emp_mang.controller;
+
+import com.springboot.emp_mang.config.JwtHelper;
+import com.springboot.emp_mang.dto.UserRequest;
+import com.springboot.emp_mang.repository.UserRepository;
+import com.springboot.emp_mang.service.UserService;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+
+@ExtendWith(MockitoExtension.class)
+public class UserControllerTests {
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
+    private UserService userService;
+
+    @MockBean
+    private UserRepository userRepository;
+
+    @MockBean
+    private AuthenticationManager authenticationManager;
+
+    @MockBean
+    private JwtHelper jwtHelper;
+
+    @InjectMocks
+    private UserController userController;
+
+    private AutoCloseable closeable;
+
+    private UserRequest userRequest;
+
+    @BeforeEach
+    void setUp() {
+        closeable = MockitoAnnotations.openMocks(this);
+        mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
+
+        userRequest = new UserRequest();
+        userRequest.setEmail("test@nucleusteq.com");
+        userRequest.setPassword("password");
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        closeable.close();
+    }
+
+
+    @Test
+    void testLogout_Success() throws Exception {
+        mockMvc.perform(post("/api/logout"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Successfully logged out"));
+    }
+}

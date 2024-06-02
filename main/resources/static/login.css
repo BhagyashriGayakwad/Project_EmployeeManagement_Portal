@@ -1,0 +1,102 @@
+/* Global */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0; /* Updated background color */
+}
+
+/* Container */
+.container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+/* Box */
+.box {
+    width: 350px;
+    padding: 30px; /* Increased padding */
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Increased shadow */
+    background-color: #fff;
+}
+
+/* Logo Container */
+.logo-container {
+    margin-bottom: 20px;
+    text-align: center; /* Centered logo */
+}
+
+.logo {
+    height: 78px;
+    width: auto;
+}
+
+/* Form Container */
+.form-container {
+    width: 100%;
+}
+
+/* Form Title */
+h2 {
+    font-size: 28px; /* Increased font size */
+    text-align: center;
+    margin-bottom: 30px; /* Increased margin */
+    color: #78057c;
+}
+
+/* Form Input Fields */
+input {
+    width: 100%;
+    margin-bottom: 20px; /* Increased margin */
+    padding: 15px; /* Increased padding */
+    border: 2px solid #ccc; /* Thicker border */
+    border-radius: 8px; /* Rounded border */
+    outline: none; /* Removed outline */
+    transition: border-color 0.3s ease; /* Smooth transition */
+}
+
+input:focus {
+    border-color: #9b329f; /* Highlight border color on focus */
+}
+
+/* Error Messages */
+.error {
+    color: #ff0000; /* Red error message */
+    margin-top: 8px; /* Adjusted margin */
+}
+
+/* Submit Button */
+button[type="submit"] {
+    width: 100%;
+    padding: 15px;
+    background-color: #9b329f;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 18px; /* Increased font size */
+}
+
+button[type="submit"]:hover {
+    background-color: #78057c;
+}
+
+/* Links */
+.link {
+    color: #007bff;
+    text-decoration: none;
+    text-align: center;
+    display: block;
+    margin-top: 20px; /* Adjusted margin */
+    font-size: 16px; /* Increased font size */
+}
+
+.link:hover {
+    text-decoration: underline; /* Underline on hover */
+}
